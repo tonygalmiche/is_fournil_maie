@@ -18,6 +18,7 @@ InfoSaône - Module Odoo 14 pour Fournil & Maie
     'data' : [
         'security/ir.model.access.csv',
         'views/product_views.xml',
+        'views/product_data.xml',
     ],
     'installable': True,
     'application': True,
