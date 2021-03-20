@@ -1,3 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_is_allergene,access_is_allergene,model_is_allergene,base.group_user,1,0,0,0
 access_is_allergene_manager,access_is_allergene_manager,model_is_allergene,purchase.group_purchase_manager,1,1,1,1
+
+access_is_famille,access_is_famille,model_is_famille,base.group_user,1,0,0,0
+access_is_famille_manager,access_is_famille_manager,model_is_famille,purchase.group_purchase_manager,1,1,1,1

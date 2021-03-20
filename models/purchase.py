@@ -22,16 +22,20 @@ class PurchaseOrder(models.Model):
                     vals={
                         'product_id': line.product_id.id, 
                         'product_uom_qty': line.product_qty,
+                        'price_unit': line.price_unit,
                     }
                     lines.append([0,False,vals])
                 vals = {
-                    'partner_id': obj.partner_id.id,
+                    'partner_id': obj.company_id.partner_id.id,
                     'origin': obj.name,
                     'order_line': lines,
                     'picking_policy': 'direct',
                     'company_id': company.id,
                     'warehouse_id':warehouse.id,
                     'invoice_status': 'to invoice',
+                    'commitment_date': obj.date_planned,
+                    'team_id': obj.company_id.partner_id.team_id.id,
+
                 }
                 order = self.env['sale.order'].sudo().create(vals)
                 obj.partner_ref = order.name

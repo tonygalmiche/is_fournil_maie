@@ -2,8 +2,59 @@
 <odoo>
 
 
+    <!-- is.famille -->
+    <record id="is_famille_tree" model="ir.ui.view">
+        <field name="name">is.famille.tree</field>
+        <field name="model">is.famille</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" create="true">
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <record id="is_famille_form" model="ir.ui.view">
+        <field name="name">is.famille.form</field>
+        <field name="model">is.famille</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="is_famille_search" model="ir.ui.view">
+        <field name="name">is.famille.search</field>
+        <field name="model">is.famille</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+           </search>
+        </field>
+    </record>
+    <record id="is_famille_action" model="ir.actions.act_window">
+        <field name="name">Familles</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">is.famille</field>
+        <field name="view_mode">tree,form</field>
+        <field name="limit">100</field>
+    </record>
+    <menuitem 
+        name="Familles" 
+        id="is_famille_menu" 
+        parent="purchase.menu_product_in_config_purchase" 
+        sequence="20"  
+        action="is_famille_action"
+    />
+
+
+
     <!-- is.allergene -->
-    <record id="is_suivi_banque_tree" model="ir.ui.view">
+    <record id="is_allergene_tree" model="ir.ui.view">
         <field name="name">is.allergene.tree</field>
         <field name="model">is.allergene</field>
         <field name="arch" type="xml">
@@ -12,7 +63,7 @@
             </tree>
         </field>
     </record>
-    <record id="is_suivi_banque_form" model="ir.ui.view">
+    <record id="is_allergene_form" model="ir.ui.view">
         <field name="name">is.allergene.form</field>
         <field name="model">is.allergene</field>
         <field name="arch" type="xml">
@@ -27,7 +78,7 @@
             </form>
         </field>
     </record>
-    <record id="is_suivi_banque_search" model="ir.ui.view">
+    <record id="is_allergene_search" model="ir.ui.view">
         <field name="name">is.allergene.search</field>
         <field name="model">is.allergene</field>
         <field name="arch" type="xml">
@@ -36,7 +87,7 @@
            </search>
         </field>
     </record>
-    <record id="is_suivi_banque_action" model="ir.actions.act_window">
+    <record id="is_allergene_action" model="ir.actions.act_window">
         <field name="name">Allergènes</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">is.allergene</field>
@@ -45,10 +96,10 @@
     </record>
     <menuitem 
         name="Allergènes" 
-        id="is_suivi_banque_menu" 
+        id="is_allergene_menu" 
         parent="purchase.menu_product_in_config_purchase" 
-        sequence="20"  
-        action="is_suivi_banque_action"
+        sequence="30"  
+        action="is_allergene_action"
     />
 
     <!--product.template-->
@@ -59,6 +110,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='categ_id']" position="after">
                 <field name="is_allergene_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Allergènes..."/>
+                <field name="is_famille_id"/>
+                <field name="is_nb_jours_dluo"/>
             </xpath>
         </field>
     </record>
@@ -68,7 +121,9 @@
         <field name="inherit_id" ref="product.product_template_tree_view"/>
         <field name="arch" type="xml">
              <field name="name" position="after">
-                <field name="is_allergene_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                <field name="is_allergene_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" optional="show"/>
+                <field name="is_famille_id"    optional="show"/>
+                <field name="is_nb_jours_dluo" optional="show"/>
             </field>
         </field>
     </record>
@@ -79,6 +134,8 @@
         <field name="arch" type="xml">
             <field name="name" position="after">
                 <field name="is_allergene_ids"/>
+                <field name="is_famille_id"/>
+                <field name="is_nb_jours_dluo"/>
             </field>
         </field>
     </record>
