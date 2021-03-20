@@ -27,7 +27,7 @@ class PurchaseOrder(models.Model):
                     lines.append([0,False,vals])
                 vals = {
                     'partner_id': obj.company_id.partner_id.id,
-                    'origin': obj.name,
+                    'client_order_ref': obj.name,
                     'order_line': lines,
                     'picking_policy': 'direct',
                     'company_id': company.id,
