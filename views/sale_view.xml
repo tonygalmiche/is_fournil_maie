@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record model="ir.ui.view" id="is_view_order_form">
+        <field name="name">is_view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="date_order" position="after">
+                <field name="is_date_vente"/>
+                <field name="is_jour_vente"    attrs="{'invisible': [('is_jour_vente','==', False)]}"/>
+                <field name="is_semaine_vente" attrs="{'invisible': [('is_semaine_vente','==', False)]}"/>
+                <field name="is_mois_vente"    attrs="{'invisible': [('is_mois_vente','==', False)]}"/>
+                <field name="is_annee_vente"   attrs="{'invisible': [('is_annee_vente','==', False)]}"/>
+            </field>
+        </field>
+    </record>   
+
+    <record model="ir.ui.view" id="is_view_order_tree">
+        <field name="name">is_view_order_tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="date_order" position="after">
+                <field name="is_date_vente"    optional="hide"/>
+                <field name="is_jour_vente"    optional="hide"/>
+                <field name="is_semaine_vente" optional="hide"/>
+                <field name="is_mois_vente"    optional="hide"/>
+                <field name="is_annee_vente"   optional="hide"/>
+            </field>
+        </field>
+    </record>   
+
+
+
+    <record id="is_sale_order_view_search_inherit_sale" model="ir.ui.view">
+        <field name="name">is_sale_order_view_search_inherit_sale</field>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_sale"/>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="is_date_vente"/>
+                <field name="is_jour_vente"/>
+                <field name="is_semaine_vente"/>
+                <field name="is_mois_vente"/>
+                <field name="is_annee_vente"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
+

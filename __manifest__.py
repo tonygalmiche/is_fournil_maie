@@ -13,11 +13,15 @@ InfoSaône - Module Odoo 14 pour Fournil & Maie
     'depends'    : [
         'base',
         'purchase',
+        'sale',
         'account',
     ],
     'data' : [
         'security/ir.model.access.csv',
-        'views/product_views.xml',
+        'views/res_partner_view.xml',
+        'views/product_view.xml',
+        'views/sale_view.xml',
+        'views/account_view.xml',
         'views/product_data.xml',
     ],
     'installable': True,
