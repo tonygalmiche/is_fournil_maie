@@ -3,29 +3,38 @@ from odoo import api, fields, models, _
 from random import randint
 
 
+class StockWarehouseOrderpoint(models.Model):
+    _inherit = "stock.warehouse.orderpoint"
 
 
-# fournil-maie=# select id,name,company_id,lot_stock_id from stock_warehouse;
-#  id |                   name                    | company_id | lot_stock_id 
-# ----+-------------------------------------------+------------+--------------
-#   1 | San Francisco                             |          1 |            8
-#   4 | MACPAIN (centre de production et magasin) |          4 |           48
-#   5 | MPJ Developpement (holding) (I)           |          5 |           60
-#   3 | MPJ CHAPEAU ROUGE (magasin) (II)          |          3 |           36
-#   2 | MPJ FAIDHERBE                             |          2 |           24
-# (5 lignes)
-
-# fournil-maie=# \q
-# odoo@buster:/$ echo "select id,name,trigger,warehouse_id,location_id,product_id,product_category_id,product_min_qty,product_max_qty,qty_multiple,company_id,qty_to_order from stock_warehouse_orderpoint where product_id=1731" | psql fournil-maie
-#  id  |   name   | trigger | warehouse_id | location_id | product_id | product_category_id | product_min_qty | product_max_qty | qty_multiple | company_id | qty_to_order 
-# -----+----------+---------+--------------+-------------+------------+---------------------+-----------------+-----------------+--------------+------------+--------------
-#  119 | OP/00018 | auto    |            5 |          60 |       1731 |                   1 |         10.0000 |         20.0000 |      30.0000 |          5 |           30
-#  120 | OP/00019 | auto    |            4 |          48 |       1731 |                   1 |         11.0000 |         21.0000 |       1.0000 |          4 |           21
-# (2 lignes)
-
-
-
-
+    @api.model
+    def create(self, vals):
+        if 'stop_write_recursion' not in self.env.context:
+            if "product_id" in vals:
+                product_id = vals["product_id"]
+                current_company_id = self.env.context.get('allowed_company_ids')[0]
+                companies = self.env['res.company'].sudo().search([('parent_id','=',False)])
+                for c in companies:
+                    if c.id==current_company_id:
+                        lines = self.env['res.company'].sudo().search([('parent_id','=',c.id)])
+                        for line in lines:
+                            products = self.env['product.product'].sudo().search([('id','=',product_id),('company_id','=',False)])
+                            for product in products:
+                                orderpoints=self.env['stock.warehouse.orderpoint'].sudo().search([('product_id','=',product_id),('company_id','=',line.id)])
+                                if not orderpoints:
+                                    warehouse = self.env['stock.warehouse'].sudo().search([('id','=',line.id)])[0]
+                                    v={
+                                        "warehouse_id"   : warehouse.id,
+                                        "location_id"    : warehouse.lot_stock_id.id,
+                                        "product_id"     : product.id,
+                                        "company_id"     : line.id,
+                                        "product_min_qty": vals["product_min_qty"],
+                                        "product_max_qty": vals["product_max_qty"],
+                                        "qty_multiple"   : vals["qty_multiple"],
+                                    }
+                                    r=self.with_context(stop_write_recursion=1).env['stock.warehouse.orderpoint'].sudo().create(v)
+        res = super(StockWarehouseOrderpoint, self).create(vals)
+        return res
 
 
 class IsFamille(models.Model):
