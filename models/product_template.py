@@ -72,10 +72,27 @@ class ProductTemplate(models.Model):
 
     @api.model
     def _rechercher_allergenes_ir_cron(self):
+        products = self.env['product.product'].sudo().search([])
+        for product in  products:
+            product.standard_price=123
         boms = self.env['mrp.bom'].search([])
         for bom in boms:
             bom.product_tmpl_id.is_allergene_ids=False
             self.bom_multiniveaux(bom,bom.product_tmpl_id,1)
+        return True
+
+
+    @api.model
+    def _update_standard_price_ir_cron(self):
+        cr=self._cr
+        sql="""
+            delete from ir_property 
+                where 
+                    name = 'standard_price' and 
+                    id not in (select max(id) from ir_property where name='standard_price' group by res_id); 
+            UPDATE ir_property SET company_id=NULL WHERE name='standard_price' AND company_id IS NOT NULL;
+        """
+        cr.execute(sql)
         return True
 
 
