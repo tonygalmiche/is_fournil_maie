@@ -72,9 +72,9 @@ class ProductTemplate(models.Model):
 
     @api.model
     def _rechercher_allergenes_ir_cron(self):
-        products = self.env['product.product'].sudo().search([])
-        for product in  products:
-            product.standard_price=123
+        #products = self.env['product.product'].sudo().search([])
+        #for product in  products:
+        #    product.standard_price=123
         boms = self.env['mrp.bom'].search([])
         for bom in boms:
             bom.product_tmpl_id.is_allergene_ids=False
