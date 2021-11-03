@@ -20,9 +20,10 @@ class PurchaseOrder(models.Model):
                 lines=[]
                 for line in obj.order_line:
                     vals={
-                        'product_id': line.product_id.id, 
+                        'product_id'     : line.product_id.id, 
+                        'name'           : line.name, 
                         'product_uom_qty': line.product_qty,
-                        'price_unit': line.price_unit,
+                        'price_unit'     : line.price_unit,
                     }
                     lines.append([0,False,vals])
                 vals = {
