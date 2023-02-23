@@ -24,6 +24,7 @@ class PurchaseOrder(models.Model):
                         'name'           : line.name, 
                         'product_uom_qty': line.product_qty,
                         'price_unit'     : line.price_unit,
+                        'product_uom'    : line.product_uom.id,
                     }
                     lines.append([0,False,vals])
                 vals = {

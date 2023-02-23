@@ -23,6 +23,8 @@ InfoSaône - Module Odoo 14 pour Fournil & Maie
         'views/sale_view.xml',
         'views/account_view.xml',
         'views/product_data.xml',
+        'views/mrp_view.xml',
+        'report/mrp_production_templates.xml',
     ],
     'installable': True,
     'application': True,

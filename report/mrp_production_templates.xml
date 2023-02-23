@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="is_report_mrporder" name="is_report_mrporder" inherit_id="mrp.report_mrporder">
+        <xpath expr="//div[hasclass('page')]" position="replace">
+            <style>
+                .page{
+                    font-size:10pt;
+                }
+            </style>
+            <div class="page">
+                <div class="oe_structure"/>
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Ordre de fabrication <span t-field="o.name"/></h2>
+                    </div>
+                </div>
+                <br />
+                <table style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Document source:</th>
+                            <th>Responsable:</th>
+                            <th>Produit fini:</th>
+                            <th>Quantité à produire:</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td><span t-field="o.origin"/></td>
+                        <td><span t-field="o.user_id"/></td>
+                        <td><span t-field="o.product_id"/></td>
+                        <td>
+                            <span t-field="o.product_qty"/>
+                            <span t-field="o.product_uom_id.name" groups="uom.group_uom"/>
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                <h3 t-if="o.move_raw_ids">
+                    <span t-if="o.state == 'done'">
+                        Articles consommés
+                    </span>
+                    <span t-else="">
+                        Articles à consommer
+                    </span>
+                </h3>
+                <table class="table table-sm" t-if="o.move_raw_ids">
+                    <t t-set="has_product_barcode" t-value="any(m.product_id.barcode for m in o.move_raw_ids)"/>
+                    <thead>
+                        <tr>
+                            <th style="width:40%">Article</th>
+                            <th style="width:20%" class="text-right">Recette</th>
+                            <th style="width:20%" class="text-right">Réel</th>
+                            <th style="width:20%" class="text-right">Température</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-if="o.move_raw_ids">
+                            <tr t-foreach="o.move_raw_ids" t-as="raw_line">
+                                <td><span t-field="raw_line.product_id"/></td>
+                                <td class="text-right"><span t-esc="raw_line.product_uom_qty"/></td>
+                                <td class="text-right"></td>
+                                <td class="text-right"></td>
+                             </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <br />
+                <h3>Mode opératoire</h3>
+                <div t-field="o.bom_id.is_mode_operatoire"/>
+                <div class="oe_structure"/>
+            </div>
+        </xpath>
+    </template>
+
+
+    <template id="is_label_production_view_pdf" name="is_label_production_view_pdf" inherit_id="mrp.label_production_view_pdf">
+        <xpath expr="//div[hasclass('page')]" position="replace">
+            <style>
+                .page{
+                    font-size:13pt;
+                }
+                table {
+                    border:0px solid black;
+                    border-collapse:collapse;
+                }
+                td { 
+                    border:0px solid black;
+                    text-align: center;
+                    padding:1pt
+                }
+            </style>
+            <div class="page">
+
+                <t t-foreach="docs" t-as="o">
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:30%"></td>
+                            <td style="width:40%">
+                                <table style="width:100%">
+                                    <tr>
+                                        <td colspan="2" style="font-size:10pt">
+                                            <span t-field="o.product_id"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            DLUO : <br />
+                                            <span 
+                                                style="font-size:34pt;font-weight: bold;"
+                                                t-field="o.is_dluo" 
+                                                t-options='{"format": "dd/MM/yyyy"}'
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="align:center:width:50%">
+                                            Date de fabrication: <br />
+                                            <span t-field="o.date_planned_start" t-options='{"format": "dd/MM/yyyy"}'/>
+                                        </td>
+                                        <td>
+                                            OP: <br />
+                                            <span t-field="o.name"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width:30%"></td>
+                        </tr>
+                    </table>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>

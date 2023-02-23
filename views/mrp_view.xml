@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="is_mrp_bom_form_view" model="ir.ui.view">
+        <field name="name">is_mrp_bom_form_view</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='components']" position="after">
+                <page string="Mode opératoire">
+                    <group>
+                        <field name="is_mode_operatoire"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="is_mrp_production_form_view" model="ir.ui.view">
+        <field name="name">is_mrp_production_form_view</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='group_extra_info']/field[@name='user_id']" position="before">
+                <field name="is_dluo"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
